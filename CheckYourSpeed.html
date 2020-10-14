@@ -1,0 +1,177 @@
+<html>
+    <head>
+        <title>dom manipulation</title>
+        <style>
+            *{
+                margin:0;
+                padding:0;
+
+            }
+            .maindiv{
+                background-color: aqua;
+                height: 100vh;
+                width: 100%;
+                position: relative;
+                
+            }
+            #firstheading{
+                position: absolute;
+                top:10px;
+                left:30%;
+                font-size: 30px;
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+             color:blue;
+            }
+            #tarea{
+             position:absolute;
+             left: 10%;
+             top:250px;
+             text-align: center;
+             font-size: 16px;
+             font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+             color:brown
+            }
+            textarea{
+                box-shadow:0 0 1px rgba(0,0,0,0.2);
+                background-color:dimgray;
+                border-radius: 7px 7px 0 0;
+                border:15px solid grey;
+                 font-size: 18px;
+                 font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+                 color:gainsboro;
+                 
+            }
+            #side{
+                background-color: white;
+                height: 300px;
+                width: 300px;
+                position:absolute;
+                top:150px;
+                left:35%;
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+                 color:brown;
+                 opacity: 0;
+                }
+                #btn{
+                  padding:10px 20px;
+                  border-radius: 20px;
+                  border:5px solid goldenrod;
+                  background: white;
+                  font-size: 1rem;
+                }
+            
+        </style>
+    </head>
+<body>
+ <div class="maindiv">
+    <h1 id="firstheading">Do you wanna check you typing speed? </h1>
+    <div id="tarea">
+      
+     <h1 id="txt"></h1>
+
+         <textarea id="writehere" rows="5" cols="100" placeholder="Type above words"></textarea>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+         <button id="btn">Start</button>
+        
+     </div>
+     
+<div id="side">
+    <h2 id="result"></h2>
+    <h3 id="correct"></h3>
+    <h3 id="error"></h3>
+
+    
+</div>
+ </div>
+    </body>
+    <script>
+        const sentence=["i was born in Dhaibung 9 jyanglang Rasuwa and i like to live there.","Nobody are same and everyone have different nature and behaviour.",
+       "Learning is revoluntionary process not a evolutionary process."];
+      
+       
+      let startTime,endTime;
+      let btn=document.getElementById("btn");
+      let side=document.getElementById("side");
+      let mywords=document.getElementById("writehere");
+      let tarea=document.getElementById("tarea");
+      
+   
+     
+      btn.addEventListener("click",function(){
+       
+      let words=document.getElementById("txt");
+
+          if(btn.innerText=="Start")
+          {
+            mywords.focus();
+              words.style.opacity=1;
+              side.style.opacity=0;
+            mywords.disabled=false;
+            let date=new Date();
+            startTime=date.getTime();
+            console.log(startTime);
+           console.log(sentence.length);
+            const randomNumber=Math.floor(Math.random()*sentence.length);
+            console.log(randomNumber+"ganeh lamichhane");
+            words.innerText=sentence[randomNumber];
+     
+      side.style.opacity="0";
+          btn.innerText="Stop";
+          }
+          else{
+             mywords.value=" ";
+              words.style.opacity=0;
+              mywords.disabled=true;
+              let date=new Date();
+            endTime=date.getTime();
+            console.log(endTime);
+           
+           side.style.opacity="1";
+           let totalTime=(endTime-startTime)/1000;
+            let totalStr=mywords.value;
+            let wordCount=0;
+             wordCount=WordCounter(totalStr);
+            let typingSpeed=Math.round((wordCount/totalTime)*60);
+      
+            let errorWord=CompareWords(totalStr, words.innerText);
+            let numberofwords=words.innerText.split(" ").length;
+            let correctWords=numberofwords-errorWord;
+            if(wordCount!=1)
+            {
+            document.getElementById("result").innerText="your typing speed is "+ typingSpeed +" words per minute";
+            document.getElementById("correct").innerText="Correct words "+correctWords;
+            document.getElementById("error").innerText="Error words "+errorWord;
+            btn.innerText="Start";
+           
+            }
+            else{
+                btn.innerText="Start";
+                document.getElementById("result").innerText="Result hernu aagadi type ta gar mula saag";
+            }
+          }
+      })
+     function WordCounter(str)
+     {
+let response=str.split(" ").length;
+return response;
+     }
+
+     function CompareWords(str1,str2)
+     {
+    let word1=str1.split(" ");
+    let word2=str2.split(" ");
+    let count=0;
+   word2.forEach(function(item,index){
+        if(item==word1[index]){
+     count++;
+     
+        }
+    }) 
+    console.log(count);
+    let errorWords=(word2.length-count);
+    return errorWords;
+}    </script>
+</html>
